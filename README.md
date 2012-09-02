@@ -1,4 +1,4 @@
-df12-streaming-api-heroku
-=========================
+DF12 Session: Process Orchestration using Streaming API and Heroku
+==================================================================
 
-Process Orchestration using Streaming API and Heroku
+The Streaming API can provide near real time updates on changes to any object data in an organisation. In this session we will demonstrate and share code for a custom Process Orchestration solution powered by the Streaming API and Heroku. Using this solution users can define criteria which the platform will apply to monitor records created or updated by users in real time. The session will demonstrate an example process using REST services taken from those offered by many of todays leading REST API providers including Salesforce.
