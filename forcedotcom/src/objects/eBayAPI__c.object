@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <customSettingsVisibility>Public</customSettingsVisibility>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>UserTokenPart1__c</fullName>
+        <externalId>false</externalId>
+        <label>User Token (Part 1)</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>UserTokenPart2__c</fullName>
+        <externalId>false</externalId>
+        <label>User Token (Part 2)</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>UserTokenPart3__c</fullName>
+        <externalId>false</externalId>
+        <label>User Token (Part 3)</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>UserTokenPart4__c</fullName>
+        <externalId>false</externalId>
+        <label>User Token (Part 4)</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <label>eBay API</label>
+</CustomObject>

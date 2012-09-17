@@ -1,0 +1,35 @@
+<apex:page standardController="Process__c" standardStylesheets="false" sidebar="false">
+<apex:includeScript value="{!$Resource.cometd}"/>  
+<apex:includeScript value="{!$Resource.jquery}"/>
+<apex:includeScript value="{!$Resource.json2}"/>
+<apex:includeScript value="{!$Resource.jquery_cometd}"/>
+<style>
+body {
+    padding: 0;
+    margin: 0;
+}
+ol {
+    margin: 0;
+    padding: 0;
+}
+</style>
+<script type="text/javascript">
+(function($){
+    $(document).ready(function() {
+       // Connect to the CometD endpoint 
+       $.cometd.init({
+           url: window.location.protocol+'//'+window.location.hostname+'/cometd/25.0/',
+           requestHeaders: { Authorization: 'OAuth {!$Api.Session_ID}'}
+       });
+       // Subscribe to a topic. JSON-encoded update will be returned in the callback 
+       $.cometd.subscribe('/topic/processloglinescreated', function(message) {
+           $('#messages').append('<li>' + message.data.sobject.Message__c + '</li>');
+           window.scrollTo(0, document.body.scrollHeight);
+        });
+    });
+ })(jQuery)
+ </script>
+ <body>
+  <ol id="messages" style="padding:0px"/>
+ </body>
+</apex:page>

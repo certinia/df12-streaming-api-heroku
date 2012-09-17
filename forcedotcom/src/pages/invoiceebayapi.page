@@ -1,0 +1,3 @@
+<apex:page standardController="Invoice__c">
+    {!Invoice__c.eBayCompleteSaleRequest__c}
+</apex:page>

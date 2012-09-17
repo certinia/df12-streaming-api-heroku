@@ -1,0 +1,149 @@
+<!--
+/**
+ * Copyright (c) 2012, FinancialForce.com, inc
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification, 
+ *   are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, 
+ *      this list of conditions and the following disclaimer.
+ * - Redistributions in binary form must reproduce the above copyright notice, 
+ *      this list of conditions and the following disclaimer in the documentation 
+ *      and/or other materials provided with the distribution.
+ * - Neither the name of the FinancialForce.com, inc nor the names of its contributors 
+ *      may be used to endorse or promote products derived from this software without 
+ *      specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+ *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL 
+ *  THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ *  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+ *  OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+**/
+ -->
+<apex:page controller="SetupController" action="{!init}" sidebar="false"
+	tabStyle="Setup__tab">
+	<apex:form >
+		<apex:sectionHeader title="Sample Setup and Configuration"></apex:sectionHeader>
+		<apex:pageMessages >
+		</apex:pageMessages>
+		<apex:pageBlock title="eBay API Token"
+			rendered="{!CompletedStep3 == true}">
+			<apex:pageBlockButtons >
+				<apex:commandButton value="Update" action="{!saveEbayAPIToken}" />
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection columns="1">
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel value="API Token:" />
+					<apex:inputTextArea value="{!eBayAPIToken}" rows="8" cols="120" />
+				</apex:pageBlockSectionItem>
+			</apex:pageBlockSection>
+			<apex:pageBlockSection columns="2">
+				<apex:pageMessage summary="This information is used by the sample eBay process shown in the demonstration. Enter your own eBay Sandbox Token here and it will be stored in the custom setting used by the Invoice formula field used to build the HTTP body of the eBay API request."
+					severity="Info" strength="1" />
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+		<apex:pageBlock title="Push Topic Setup" mode="edit"
+			rendered="{!ShowStep1 == false}">
+			<apex:pageBlockButtons >
+				<apex:commandButton value="Heroku Setup..." action="{!init}" />
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection columns="2">
+				<apex:pageMessage summary="Default PushTopic's for this sample have been created, click Heroku Setup to configure the process manager."
+					severity="Info" strength="1" />
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+		<apex:pageBlock title="Step 1: Heroku API Key" mode="edit"
+			rendered="{!ShowStep1}">
+			<apex:pageBlockButtons >
+				<apex:commandButton value="Save" action="{!saveAPIKey}"
+					rendered="{!CompletedStep1 == false}" />
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection columns="1">
+				<apex:pageBlockSectionItem rendered="{!CompletedStep1 == false}">
+					<apex:outputLabel value="API Key:" />
+					<apex:inputText value="{!apiKey}" size="60" />
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem rendered="{!CompletedStep1 == true}">
+					<apex:outputLabel value="API Key:" />
+					<apex:outputText value="{!apiKey}" />
+				</apex:pageBlockSectionItem>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+		<apex:pageBlock title="Step 2: Heroku App Name" mode="edit"
+			rendered="{!ShowStep2}">
+			<apex:pageBlockButtons >
+				<apex:commandButton value="Save" action="{!saveAppName}"
+					rendered="{!CompletedStep2 == false}" />
+				<apex:outputLink value="https://api.heroku.com/myapps/df12-processmanager/clone"
+					rendered="{!CompletedStep2 == false}" target="_new">Create...</apex:outputLink>
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection columns="1">
+				<apex:pageBlockSectionItem rendered="{!CompletedStep2 == false}">
+					<apex:outputLabel value="Existing Application Name:" />
+					<apex:inputText value="{!ApplicationName}" />
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem rendered="{!CompletedStep2 == true}">
+					<apex:outputLabel value="Existing Application Name:" />
+					<apex:outputText value="{!ApplicationName}" />
+				</apex:pageBlockSectionItem>
+			</apex:pageBlockSection>
+			<apex:pageBlockSection columns="2"
+				rendered="{!CompletedStep2 == false}">
+				<apex:pageMessage summary="Click 'Create...' to clone the Heroku application from the Dreamforce 2012 session into your Heroku account. Note the name shown in the URL once completed and return to this tab to enter it. Or simply enter an existing application name you have already deployed."
+					severity="Info" strength="1" />
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+		<apex:pageBlock title="Step 3: Heroku Worker Process Configuration"
+			mode="edit" rendered="{!ShowStep3}">
+			<apex:pageBlockButtons >
+				<apex:commandButton value="Save" action="{!saveWorkerConfig}"
+					rendered="{!CompletedStep3 == false}" />
+				<apex:commandButton value="Reset" action="{!resetWorkerConfig}"
+					rendered="{!CompletedStep3 == true}" />
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection columns="1"
+				rendered="{!CompletedStep3 == false}">
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel value="Salesforce Username:" />
+					<apex:inputText value="{!userName}" />
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel value="Salesforce Password:" />
+					<apex:inputText value="{!passWord}" />
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel value="Salesforce Token" />
+					<apex:inputText value="{!token}" />
+				</apex:pageBlockSectionItem>
+			</apex:pageBlockSection>
+			<apex:pageBlockSection columns="2"
+				rendered="{!CompletedStep3 == false}">
+				<apex:pageMessage summary="This information will not be stored in this org, but will be stored in the above Heroku application configuration. Ideally oAuth would be used for this sample, in due course it will be changed to use this."
+					severity="Warning" strength="1" />
+			</apex:pageBlockSection>
+			<apex:pageBlockSection columns="2"
+				rendered="{!CompletedStep3 == true}">
+				<apex:pageMessage summary="Login details have been configured for the above Heroku application. Click the Reset button to enter these details again, the Heroku worker will automatically restart."
+					severity="Info" strength="1" />
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+		<apex:pageBlock title="Step 4: Heroku Worker Process" mode="edit"
+			rendered="{!ShowStep4}">
+			<apex:pageBlockButtons >
+				<apex:commandButton value="Refresh" action="{!init}" />
+				<apex:commandButton value="Restart" action="{!restartWorker}" />
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection columns="1">
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel value="Worker Process Response:" />
+					<apex:outputText value="{!WorkerStatus}" />
+				</apex:pageBlockSectionItem>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>
